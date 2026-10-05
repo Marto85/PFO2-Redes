@@ -82,6 +82,11 @@ def login():
         "autenticado": True
     }), 200
 
+@app.route('/tareas', methods=['GET'])
+def tareas():
+    """Endpoint que renderiza el HTML de bienvenida del sistema de tareas."""
+    return render_template('tareas.html')
+
 
 if __name__ == "__main__":
     init_db()
