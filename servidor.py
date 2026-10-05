@@ -55,6 +55,35 @@ def registro():
     finally:
         conn.close()
 
+
+@app.route('/login', methods=['POST'])
+def login():
+    """Endpoint para autenticar usuarios comparando la contraseña con su hash."""
+    datos = request.get_json()
+
+    if not datos or 'usuario' not in datos or 'contraseña' not in datos:
+        return jsonify({"mensaje": "Datos incompletos. Se requiere 'usuario' y 'contraseña'."}), 400
+
+    usuario = datos['usuario'].strip()
+    password = datos['contraseña']
+
+    conn = get_db_connection()
+    cursor = conn.cursor()
+    cursor.execute("SELECT * FROM usuarios WHERE usuario = ?", (usuario,))
+    user_record = cursor.fetchone()
+    conn.close()
+
+    # Si no existe el usuario o la contraseña no coincide con el hash
+    if not user_record or not check_password_hash(user_record['password_hash'], password):
+        return jsonify({"mensaje": "Credenciales invalidas (usuario o contraseña incorrectos)."}), 401
+
+    return jsonify({
+        "mensaje": f"Bienvenido/a {usuario}, inicio de sesion exitoso.",
+        "autenticado": True
+    }), 200
+
+
 if __name__ == "__main__":
     init_db()
     app.run(debug=True, port=5000)
+
