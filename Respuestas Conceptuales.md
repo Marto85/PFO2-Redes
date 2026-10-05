@@ -1,8 +1,9 @@
 **Respuestas Conceptuales**
 
 1. ¿Por qué hashear contraseñas?
-Basicamente la razon fundamental es que almacenar contraseñas como texto plano seria una de las formas mas sencillas de facilitar ataques. Si un atacante logra acceder a la base de datos, obtendría directamente las claves reales de todos los usuarios. El hashing criptográfico resuelve esto porque no se puede revertirlo a su valor original pero trabaja de manera tal que el servidor recibe la clave que ingresa el usuario que pretende loguearse, le aplica el hasheo y compara con la que existe en la base de datos. 
-A esto le agregue para el proyecto el uso de una libreria como Werkzeug que tiene una funcion que agrega una secuencia aleatoria unica a cada password antes de procesarlo, asegurando que en el caso de que 2 usuarios registraran identica contraseña, tengan cada una un hash diferente en la base de datos, lo cual brinda aun mayor seguridad. 
+Porque guardar contraseñas en texto plano es muy riesgoso. Si alguien logra entrar a la base de datos, puede ver todas las claves reales de los usuarios y eso sería un problema serio. Por eso se usa el hashing, que transforma la contraseña en un valor cifrado que no se puede volver a la original. Cuando un usuario quiere iniciar sesión, la aplicación toma la contraseña que escribió, la hashea y la compara con la que está guardada. De esa forma, ni siquiera el sistema tiene que guardar la contraseña original.
+
+En este proyecto usé Werkzeug, que ya trae funciones de hashing seguras. Además, agrega un valor aleatorio propio a cada contraseña antes de procesarla, así dos personas que tengan la misma contraseña no queden con el mismo hash en la base de datos. Esto hace que la seguridad sea mucho mejor.
 
 2. Ventajas de usar SQLite en este proyecto
-No necesita instalar, levantar ni mantener un servidor de base de datos externo (como PostgreSQL, MariaDB o SQL Server). Se ejecuta directamente en el mismo proceso de la aplicación Python. Ademas esta integrado de forma nativa en python y es super liviano y por lo tanto 100% portable sin complicaciones
+SQLite es una muy buena opción para este tipo de proyecto porque no necesita un servidor de base de datos separado. Se usa directamente dentro de la aplicación y es muy fácil de mantener. Además, viene integrado con Python, por lo que no hace falta instalar nada extra para usarlo. Es liviano, práctico y portátil, así que es ideal para proyectos pequeños o de aprendizaje como este.
